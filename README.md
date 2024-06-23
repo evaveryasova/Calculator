@@ -145,6 +145,39 @@ public class CalcControllerTest {
 }
 
 ```
+Результат тестов
+![Tests](https://github.com/evaveryasova/Calculator/blob/main/images/tests.jpg)
 
+## _**Задание №4 - ПОдключение in-memory БД**_
+
+Добавляем в pom.xml зависимости
+```
+<dependency>
+	<groupId>org.springframework.boot</groupId>
+	<artifactId>spring-boot-starter-data-jpa</artifactId>
+</dependency>
+<dependency>
+	<groupId>com.h2database</groupId>
+	<artifactId>h2</artifactId>
+	<scope>runtime</scope>
+</dependency>
+```
+Добавляем в файл application.properties
+
+```
+spring.application.name=practice
+
+spring.h2.console.enabled=true
+spring.datasource.url=jdbc:h2:mem:testdb
+spring.datasource.driverClassName=org.h2.Driver
+spring.datasource.username=vinevskaya
+spring.datasource.password=123456321
+spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+spring.jpa.defer-datasource-initialization=true
+```
+Создаём файлы базы данных (DatabaseRes) и репозитория (RepositoryRes)<br>
+[!Repository](https://github.com/KseniyaVinevskaya/CalculatorJava/blob/main/images/image11.png)<br>
+
+Код базы данных<br>
 
 
