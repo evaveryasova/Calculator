@@ -51,17 +51,100 @@ public class CalcController {
 ```
 Тестируем своё приложение по адресу http://localhost:8080/swagger-ui/index.html
 Результат ссылки
-![Right](https://github.com/KseniyaVinevskaya/CalculatorJava/blob/main/images/image3.png)<br>
-Сложение в swagger<br>
-![Swork+](https://github.com/KseniyaVinevskaya/CalculatorJava/blob/main/images/image4.png)<br>
-Вычитание в swagger<br>
-![Swork-](https://github.com/KseniyaVinevskaya/CalculatorJava/blob/main/images/image5.png)<br>
+![Right](https://github.com/evaveryasova/Calculator/blob/main/images/right.png)
 
-1) Конфигурация проекта: 
-2) Результат ссылки http://localhost:8080/plus/10/3: 
-3) Результат ссылки http://localhost:8080/minus/10/3: 
-4) Результат ссылки http://localhost:8080/swagger-ui/index.html: 
-  1. https://github.com/evaveryasova/Calculator/blob/main/images/image1.png
-  2. https://github.com/evaveryasova/Calculator/blob/main/images/image2.png
-  3. https://github.com/evaveryasova/Calculator/blob/main/images/image3.png
-  4. https://github.com/evaveryasova/Calculator/blob/main/images/image4.png
+Сложение в swagger
+![Swork+](https://github.com/evaveryasova/Calculator/blob/main/images/image1.png)
+![Swork+](https://github.com/evaveryasova/Calculator/blob/main/images/image2.png)
+
+Вычитание в swagger
+![Swork-]( https://github.com/evaveryasova/Calculator/blob/main/images/image3.png)
+![Swork-](https://github.com/evaveryasova/Calculator/blob/main/images/image4.png)
+
+## _**Задание №3 - Создание тестов**_
+
+Изменения в pom.xml
+
+```
+<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<!-- Swagger Dependency-->
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>2.0.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-test-autoconfigure</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+			<version>RELEASE</version>
+			<scope>compile</scope>
+		</dependency>
+	</dependencies>
+```
+Код тестов
+
+```
+package ru.neoflex.practice;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.test.web.servlet.MockMvc;
+import ru.neoflex.practice.controller.CalcController;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+@WebMvcTest(CalcController.class)
+public class CalcControllerTest {
+
+	@Autowired
+	private MockMvc mockMvc;
+
+	@Test
+	public void testPlus() throws Exception {
+		mockMvc.perform(get("/calc/plus/5/3"))
+				.andExpect(status().isOk())
+				.andExpect(content().string("8"));
+	}
+
+	@Test
+	public void testMinus() throws Exception {
+		mockMvc.perform(get("/calc/minus/5/3"))
+				.andExpect(status().isOk())
+				.andExpect(content().string("2"));
+	}
+}
+
+```
+
+
+
