@@ -276,3 +276,8 @@ public class CalcController {
 
 Результат с записями<br>
 ![Result2](https://github.com/evaveryasova/Calculator/blob/main/images/popit.png) 
+
+
+Автор: Верясова Ева Андреевна
+	Колледж Телекоммуникаций им. Э.ЕюКренкеля
+ 	Курс 3, группа к520
