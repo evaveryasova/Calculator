@@ -176,8 +176,103 @@ spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
 spring.jpa.defer-datasource-initialization=true
 ```
 Создаём файлы базы данных (DatabaseRes) и репозитория (RepositoryRes)<br>
-[!Repository](https://github.com/KseniyaVinevskaya/CalculatorJava/blob/main/images/image11.png)<br>
+[!Repository](https://github.com/evaveryasova/Calculator/blob/main/images/file.png)
 
-Код базы данных<br>
+Код базы данных
+```
+package ru.neoflex.practice.database;
 
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
+@Table(name = "CalcRes")
+@Entity
+public class CalcRes {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private int id;
+
+    @Column(name = "first_number", nullable = false)
+    private int operand1;
+
+    @Column(name = "action", nullable = false)
+    private String action;
+
+    @Column(name = "second_number", nullable = false)
+    private int operand2;
+
+    @Column(name = "result", nullable = false)
+    private int result;
+
+    public CalcRes( int operand1, String action, int operand2, int result) {
+        this.operand1 = operand1;
+        this.action = action;
+        this.operand2 = operand2;
+        this.result = result;
+    }
+}
+```
+Код репозитория
+```
+package ru.neoflex.practice.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import ru.neoflex.practice.database.CalcRes;
+
+import java.util.List;
+
+public interface RepositoryRes extends JpaRepository<CalcRes, Integer> {
+    @Query("Select db from CalcRes db")
+    List<CalcRes> findAllRes();
+}
+
+```
+Измененный код CalcController.java
+```
+package ru.neoflex.practice.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import ru.neoflex.practice.database.CalcRes;
+import ru.neoflex.practice.repository.RepositoryRes;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/calc")
+public class CalcController {
+
+    @Autowired
+    public RepositoryRes RepositoryRes;
+
+    @GetMapping("/plus/{a}/{b}")
+    public Integer plus (@PathVariable("a") Integer a, @PathVariable("b") Integer b){
+        RepositoryRes.save(new CalcRes(a, "+", b, a + b));
+        return a+b;
+    }
+    @GetMapping("/minus/{a}/{b}")
+    public Integer minus (@PathVariable("a") Integer a, @PathVariable("b") Integer b){
+        RepositoryRes.save(new CalcRes(a, "+", b, a + b));
+        return a-b;
+    }
+    @GetMapping("/TableAll")
+    public List<CalcRes> getAllRes() {
+        return RepositoryRes.findAllRes();
+    }
+}
+```
+Результат без записей
+![Result1](https://github.com/evaveryasova/Calculator/blob/main/images/pustoy.png)
+
+Результат с записями<br>
+![Result2](https://github.com/evaveryasova/Calculator/blob/main/images/popit.png) 
